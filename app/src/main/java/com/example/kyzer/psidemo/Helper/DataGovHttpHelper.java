@@ -1,5 +1,7 @@
 package com.example.kyzer.psidemo.Helper;
 
+import android.text.TextUtils;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -12,7 +14,10 @@ import java.net.URL;
 public class DataGovHttpHelper {
     private final static String apiKey = "";
 
-    public static String getString(String urlString){
+    public static String getString(String urlString) throws NoAPIKeyException {
+        if (TextUtils.isEmpty(apiKey)){
+            throw new NoAPIKeyException();
+        }
         String Content = "";
         BufferedReader reader = null;
 
@@ -49,5 +54,9 @@ public class DataGovHttpHelper {
             }
         }
         return Content;
+    }
+    public static class NoAPIKeyException extends Exception {
+        public NoAPIKeyException() { super(); }
+
     }
 }

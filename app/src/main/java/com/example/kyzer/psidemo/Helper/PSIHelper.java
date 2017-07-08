@@ -14,7 +14,7 @@ import java.util.Date;
 
 public class PSIHelper {
 
-    public static PSI getPSI() {
+    public static PSI getPSI() throws DataGovHttpHelper.NoAPIKeyException {
 
         String url = "https://api.data.gov.sg/v1/environment/psi?date_time=";
         DateFormat dateFormatDate = new SimpleDateFormat("yyyy-MM-dd");
@@ -27,7 +27,11 @@ public class PSIHelper {
 
         //deserialize into class
         Gson gson = new GsonBuilder().create();
-        PSI psi = gson.fromJson(result, PSI.class);
+        PSI psi = null;
+        try{
+            psi = gson.fromJson(result, PSI.class);
+        }catch (Exception ex){
+        }
 
         return psi;
     }

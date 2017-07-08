@@ -1,7 +1,9 @@
 package com.example.kyzer.psidemo;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.example.kyzer.psidemo.Class.PSI;
+import com.example.kyzer.psidemo.Helper.DataGovHttpHelper;
 import com.example.kyzer.psidemo.Helper.PSIHelper;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,7 +43,13 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(Object... params) {
             dialog = (ProgressDialog) params[0];
             context = (Context) params[1];
-            psiData = PSIHelper.getPSI();
+            try {
+                psiData = PSIHelper.getPSI();
+            } catch (DataGovHttpHelper.NoAPIKeyException e) {
+                return "Please enter API Key in DataGovHttpHelper.java";
+            } catch (Exception e1){
+                return "An error has occurred. Please check your internet connection.";
+            }
             return "";
         }
 
@@ -67,6 +76,20 @@ public class MainActivity extends AppCompatActivity {
                 textview = (TextView) findViewById(R.id.lblWest);
                 temp = (int)psiData.getPSIItems().get(0).getReadings().getPsi_twenty_four_hourly().getWest();
                 textview.setText(Integer.toString(temp));
+            }else{
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+                builder1.setMessage(s);
+                builder1.setPositiveButton(
+                        "Exit",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                                finish();
+                            }
+                        });
+                AlertDialog alert = builder1.create();
+                alert.setCancelable(false);
+                alert.show();
             }
             dialog.dismiss();
         }
