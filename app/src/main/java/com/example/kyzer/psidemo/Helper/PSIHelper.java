@@ -1,6 +1,8 @@
 package com.example.kyzer.psidemo.Helper;
 
 import com.example.kyzer.psidemo.Class.PSI;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -24,7 +26,9 @@ public class PSIHelper {
         String result = DataGovHttpHelper.getString(url);
 
         //deserialize into class
+        Gson gson = new GsonBuilder().create();
+        PSI psi = gson.fromJson(result, PSI.class);
 
-        return null;
+        return psi;
     }
 }
