@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="psi_font_size">40sp</dimen>
+    <dimen name="header_font_size">28sp</dimen>
+</resources>
